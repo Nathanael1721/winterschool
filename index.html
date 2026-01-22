@@ -1,35 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Hello Cesium</title>
-  <script src="./node_modules/cesium/Build/Cesium/Cesium.js"></script>
   <style>
-    @import url(./node_modules/cesium/Build/Cesium/Widgets/widgets.css);
-    html, body, #cesiumContainer {
-      width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
   </style>
 </head>
+
 <body>
   <div id="cesiumContainer"></div>
-  <script>
-    // Tell Cesium where to find its assets
-    window.CESIUM_BASE_URL = './node_modules/cesium/Build/Cesium/';
-    
-    // Initialize the viewer
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: Cesium.Terrain.fromWorldTerrain(),
-    });
-    
-    // Fly to a specific location (San Francisco)
-    viewer.camera.flyTo({
-      destination : Cesium.Cartesian3.fromDegrees(-122.4175, 37.7750, 400),
-      orientation : {
-        heading : Cesium.Math.toRadians(0.0),
-        pitch : Cesium.Math.toRadians(-15.0),
-      }
-    });
-  </script>
+  <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>
