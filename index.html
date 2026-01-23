@@ -13,19 +13,34 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
   </style>
 </head>
 
 <body>
   <div id="cesiumContainer"></div>
-
-  <div id="weatherWidget">
-    <div id="weatherLocation">Loading...</div>
-    <img id="weatherIcon" src="" alt="Weather Icon" style="display: none;">
-    <div id="weatherTemp">--°C</div>
-    <div id="weatherDesc">Waiting for data...</div>
+  <div id="errorOverlay"
+    style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,0,0,0.8); color: white; padding: 20px; display: none; z-index: 9999;">
   </div>
+  <script>
+    window.onerror = function (msg, url, line, col, error) {
+      const overlay = document.getElementById('errorOverlay');
+      overlay.style.display = 'block';
+      overlay.innerHTML += `<div>Error: ${msg} <br> at ${line}:${col}</div>`;
+      return false;
+    };
+    window.addEventListener('unhandledrejection', function (event) {
+      const overlay = document.getElementById('errorOverlay');
+      overlay.style.display = 'block';
+      overlay.innerHTML += `<div>Promise Rejection: ${event.reason}</div>`;
+    });
+  </script>
+
+
 
   <div id="ui">
     <button id="rainBtn">Rain</button>
@@ -35,27 +50,35 @@
       <label for="intensity">Intensity:</label>
       <input type="range" id="intensity" min="0" max="10000" value="5000" oninput="window.setIntensity(this.value)">
     </div>
+
+    <div id="weatherWidget">
+      <div id="weatherLocation">Loading...</div>
+      <img id="weatherIcon" src="" alt="Weather Icon" style="display: none;">
+      <div id="weatherTemp">--°C</div>
+      <div id="weatherDesc">Waiting for data...</div>
+      <div class="weather-details">
+        <div id="weatherHumidity">💧 --%</div>
+        <div id="weatherWind">💨 -- m/s</div>
+      </div>
+    </div>
   </div>
   <style>
     /* Weather Widget */
     #weatherWidget {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(42, 42, 42, 0.7);
-      backdrop-filter: blur(10px);
-      padding: 15px;
-      border-radius: 12px;
+      margin-top: 15px;
+      background: rgba(42, 42, 42, 0.5);
+      border-radius: 8px;
+      padding: 10px;
       color: white;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      box-sizing: border-box;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      z-index: 100;
-      min-width: 120px;
       transition: all 0.3s ease;
     }
 
@@ -80,6 +103,14 @@
       font-size: 14px;
       text-transform: capitalize;
       opacity: 0.9;
+    }
+
+    .weather-details {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      margin-top: 5px;
+      opacity: 0.8;
     }
 
     #weatherLocation {

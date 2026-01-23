@@ -17,15 +17,25 @@ const assets = [
     { id: 4371213, name: 'Jogging Track' },
     { id: 4371161, name: 'Kung Fu Statue' },
     { id: 4371077, name: 'Boulevard' },
-    { id: 96188, name: 'Cesium OSM Buildings' },
-    { id: 4374622, name: 'Daxue Road' },
-
+    { id: 96188, name: 'Cesium OSM Buildings' }, // Commented out for debugging
+    { id: 4374622, name: 'Daxue Road' }, // Commented out for debugging
 ];
+
+// Set default view to Tainan immediately
+viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(120.2181, 22.9997, 1000), // NCKU, Taiwan
+    orientation: {
+        heading: Cesium.Math.toRadians(0.0),
+        pitch: Cesium.Math.toRadians(-45.0),
+    }
+});
 
 // Load all assets
 Promise.all(assets.map(async (asset) => {
     try {
         const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(asset.id);
+
+
         // Monitor for tile loading errors
         tileset.tileFailed.addEventListener((error) => {
             console.warn(`Tile failed to load in ${asset.name}:`, error);
@@ -39,10 +49,10 @@ Promise.all(assets.map(async (asset) => {
     }
 })).then((tilesets) => {
     // Zoom to the first successfully loaded tileset to ensure visibility
-    const validTilesets = tilesets.filter(t => t !== null);
-    if (validTilesets.length > 0) {
-        viewer.zoomTo(validTilesets[0]);
-    }
+    // const validTilesets = tilesets.filter(t => t !== null);
+    // if (validTilesets.length > 0) {
+    //    viewer.zoomTo(validTilesets[0]);
+    // }
 });
 
 // OSM Buildings commented out to focus on custom assets
@@ -267,9 +277,16 @@ function updateWeatherUI(data) {
     const descElement = document.getElementById('weatherDesc');
     const iconElement = document.getElementById('weatherIcon');
     const locElement = document.getElementById('weatherLocation');
+    const humElement = document.getElementById('weatherHumidity');
+    const windElement = document.getElementById('weatherWind');
 
     if (data.main && data.main.temp) {
         tempElement.innerText = `${Math.round(data.main.temp)}°C`;
+        humElement.innerText = `💧 ${data.main.humidity}%`;
+    }
+
+    if (data.wind) {
+        windElement.innerText = `💨 ${Math.round(data.wind.speed)} m/s`;
     }
 
     if (data.weather && data.weather.length > 0) {
@@ -283,7 +300,8 @@ function updateWeatherUI(data) {
     }
 
     if (data.name) {
-        locElement.innerText = data.name;
+        // Override "Chikanlou" (station name) to "Tainan City" for clarity
+        locElement.innerText = (data.name === 'Chikanlou' || data.name === 'East District') ? 'Tainan City' : data.name;
     }
 }
 
