@@ -16,7 +16,10 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
 const assets = [
     { id: 4371213, name: 'Jogging Track' },
     { id: 4371161, name: 'Kung Fu Statue' },
-    { id: 4371077, name: 'Boulevard' }
+    { id: 4371077, name: 'Boulevard' },
+    { id: 96188, name: 'Cesium OSM Buildings' },
+    { id: 4374622, name: 'Daxue Road' },
+
 ];
 
 // Load all assets
