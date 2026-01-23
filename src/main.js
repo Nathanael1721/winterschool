@@ -237,3 +237,61 @@ document.getElementById('clearBtn').addEventListener('click', () => window.setWe
 window.setWeather('rain');
 const slider = document.getElementById('intensity');
 if (slider) window.setIntensity(slider.value);
+
+// --- OpenWeatherMap Integration ---
+
+const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const WEATHER_API_BASE = 'https://api.openweathermap.org/data/2.5/weather';
+
+async function fetchWeather(lat, lon) {
+    if (!WEATHER_API_KEY || WEATHER_API_KEY === 'your_api_key_here') {
+        console.warn('OpenWeatherMap API key not set.');
+        document.getElementById('weatherDesc').innerText = 'No API Key';
+        return;
+    }
+
+    try {
+        const url = `${WEATHER_API_BASE}?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Weather fetch failed');
+        const data = await response.json();
+        updateWeatherUI(data);
+    } catch (error) {
+        console.error('Error fetching weather:', error);
+        document.getElementById('weatherDesc').innerText = 'Error';
+    }
+}
+
+function updateWeatherUI(data) {
+    const tempElement = document.getElementById('weatherTemp');
+    const descElement = document.getElementById('weatherDesc');
+    const iconElement = document.getElementById('weatherIcon');
+    const locElement = document.getElementById('weatherLocation');
+
+    if (data.main && data.main.temp) {
+        tempElement.innerText = `${Math.round(data.main.temp)}°C`;
+    }
+
+    if (data.weather && data.weather.length > 0) {
+        const weather = data.weather[0];
+        descElement.innerText = weather.description;
+
+        // Set icon
+        const iconUrl = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
+        iconElement.src = iconUrl;
+        iconElement.style.display = 'block';
+    }
+
+    if (data.name) {
+        locElement.innerText = data.name;
+    }
+}
+
+// Initial fetch for Tainan, Taiwan
+// Coordinates: 22.9997° N, 120.2126° E
+fetchWeather(22.9997, 120.2126);
+
+// Sync weather check every 10 minutes
+setInterval(() => {
+    fetchWeather(22.9997, 120.2126);
+}, 600000);

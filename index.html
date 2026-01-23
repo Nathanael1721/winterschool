@@ -19,6 +19,14 @@
 
 <body>
   <div id="cesiumContainer"></div>
+
+  <div id="weatherWidget">
+    <div id="weatherLocation">Loading...</div>
+    <img id="weatherIcon" src="" alt="Weather Icon" style="display: none;">
+    <div id="weatherTemp">--°C</div>
+    <div id="weatherDesc">Waiting for data...</div>
+  </div>
+
   <div id="ui">
     <button id="rainBtn">Rain</button>
     <button id="snowBtn">Snow</button>
@@ -29,7 +37,60 @@
     </div>
   </div>
   <style>
+    /* Weather Widget */
+    #weatherWidget {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(42, 42, 42, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 12px;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 100;
+      min-width: 120px;
+      transition: all 0.3s ease;
+    }
+
+    #weatherWidget:hover {
+      background: rgba(42, 42, 42, 0.85);
+      transform: translateY(-2px);
+    }
+
+    #weatherIcon {
+      width: 50px;
+      height: 50px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    #weatherTemp {
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #weatherDesc {
+      font-size: 14px;
+      text-transform: capitalize;
+      opacity: 0.9;
+    }
+
+    #weatherLocation {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+
+    /* Control Panel Styles */
     #ui {
+      /* Renamed from #controlPanel to match existing HTML */
       position: absolute;
       top: 10px;
       left: 10px;
@@ -37,6 +98,7 @@
       background: rgba(42, 42, 42, 0.8);
       padding: 10px;
       border-radius: 5px;
+      /* Kept existing border-radius */
     }
 
     button {
