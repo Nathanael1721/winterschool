@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Particle Textures</title>
+</head>
+<body>
+    <h2>Particle Texture Generator</h2>
+    <p>Creating particle textures...</p>
+    <canvas id="rainCanvas" width="5" height="15"></canvas>
+    <canvas id="snowCanvas" width="8" height="8"></canvas>
+    <script>
+        // Rain texture (blue vertical line)
+        const rainCanvas = document.getElementById('rainCanvas');
+        const rainCtx = rainCanvas.getContext('2d');
+        rainCtx.fillStyle = 'rgba(150, 200, 255, 0.8)';
+        rainCtx.fillRect(2, 0, 1, 15);
+        const rainLink = document.createElement('a');
+        rainLink.download = 'rain.png';
+        rainLink.href = rainCanvas.toDataURL();
+        rainLink.click();
+
+        // Snow texture (white circle)
+        const snowCanvas = document.getElementById('snowCanvas');
+        const snowCtx = snowCanvas.getContext('2d');
+        snowCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        snowCtx.beginPath();
+        snowCtx.arc(4, 4, 3, 0, Math.PI * 2);
+        snowCtx.fill();
+        const snowLink = document.createElement('a');
+        snowLink.download = 'snow.png';
+        snowLink.href = snowCanvas.toDataURL();
+        snowLink.click();
+
+        document.body.innerHTML += '<p>Done! Images downloaded.</p>';
+    </script>
+</body>
+</html>

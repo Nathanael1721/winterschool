@@ -19,6 +19,39 @@
 
 <body>
   <div id="cesiumContainer"></div>
+  <div id="ui">
+    <button id="rainBtn">Rain</button>
+    <button id="snowBtn">Snow</button>
+    <button id="clearBtn">Clear</button>
+    <div style="margin-top: 10px; color: white;">
+      <label for="intensity">Intensity:</label>
+      <input type="range" id="intensity" min="0" max="10000" value="5000" oninput="window.setIntensity(this.value)">
+    </div>
+  </div>
+  <style>
+    #ui {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #444;
+      color: white;
+      border: 1px solid #666;
+      padding: 5px 10px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #555;
+    }
+  </style>
   <script type="module" src="/src/main.js"></script>
 </body>
 
